@@ -679,7 +679,7 @@ footer {
 /* Barre de nav fixe en bas, icônes seules */
 .bottom-nav {
   position: fixed;
-  bottom: 0;
+  bottom: 1rem;               /* 1rem au-dessus du bord */
   left: 0;
   width: 100%;
   background: #f5faff;
@@ -687,7 +687,7 @@ footer {
   justify-content: space-around;
   align-items: center;
   padding: 0.6rem 0;
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.08); /* ombre vers le haut */
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05); /* légère ombre plus douce */
   z-index: 1000;
 }
 
@@ -700,7 +700,10 @@ footer {
   text-align: center;
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
-
+body,
+.home-container {
+  background-color: #ffffff;
+}
 /* Assure-toi que ton contenu ne soit pas masqué derrière la barre */
 body, .page-container, main.home {
   padding-bottom: 3.5rem; /* ≃ hauteur de .bottom-nav + petit gap */
@@ -709,14 +712,21 @@ body, .page-container, main.home {
 main.favorites {
   padding-bottom: 3.5rem; /* hauteur de la .bottom-nav */
 }
+
+body,
+main.home {
+  /* Hauteur nav = 3.5rem + décalage 1rem = 4.5rem */
+  padding-bottom: 4.5rem !important;
+}
+
 .logo-header {
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: white;
-  height: 100px;
+  height: 60px;
   position: relative;
-  padding: env(safe-area-inset-top) 1rem 0;
+  padding: env(safe-area-inset-top) 0.75rem; /* moins de padding latéral */
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08); /* ajout d'une ombre douce */
   z-index: 100;
 }
@@ -726,16 +736,31 @@ main.favorites {
   left: 1rem;
   top: 50%;
   transform: translateY(-50%);
+
+  /* Dimensions et centrage de l’icône */
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Taille et couleur */
+  font-size: 1.4rem;
+  color: var(--fluvigo-blue);
+
+  /* Style “reset” */
   background: none;
   border: none;
-  font-size: 1.8rem;
+
+  /* Interaction */
   cursor: pointer;
   z-index: 10;
 }
 
+
 .logo-img {
-  height: 70px; /* Taille visuelle proche de ta maquette */
-  max-height: 80px;
+  height: 40px; /* Taille visuelle proche de ta maquette */
+  max-height: 48px;
   object-fit: contain;
 }
 
@@ -932,3 +957,7 @@ p {
   line-height: 1.5;
 }
 
+.logo-header .burger-btn {
+  top: 50%;
+  transform: translateY(-50%);
+}

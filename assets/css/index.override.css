@@ -155,3 +155,8 @@ footer {
   /* Les autres propriétés (background, padding, font-size…) restent */
 }
 /* ─────────────────────────────────────────────────────────────────── */
+/* ─── Fond blanc unifié ─── */
+body,
+.home-container {
+  background-color: #ffffff; /* même blanc que le header */
+}
