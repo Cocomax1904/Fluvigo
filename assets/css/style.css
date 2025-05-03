@@ -682,12 +682,15 @@ footer {
   bottom: 1rem;               /* 1rem au-dessus du bord */
   left: 0;
   width: 100%;
-  background: #f5faff;
+  background: #e0f7fa;
   display: flex;
   justify-content: space-around;
   align-items: center;
   padding: 0.6rem 0;
-  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05); /* légère ombre plus douce */
+  box-shadow:
+    0 -4px 8px rgba(0, 0, 0, 0.08),  /* ombre en haut */
+    -4px 0 8px rgba(0, 0, 0, 0.08),  /* ombre à gauche */
+    4px 0 8px rgba(0, 0, 0, 0.08);   /* ombre à droite */
   z-index: 1000;
 }
 
@@ -960,4 +963,27 @@ p {
 .logo-header .burger-btn {
   top: 50%;
   transform: translateY(-50%);
+}
+
+/* ─── Bottom-nav : fond étendu, icônes à 1rem, ombre uniquement en haut ─── */
+.bottom-nav {
+  position: fixed;
+  bottom: 1rem;               /* icônes toujours à 1rem du bas */
+  left: 0;
+  width: 100%;
+  background-color: #e0f7fa;  /* couleur de base */
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.08); /* ombre uniquement au-dessus */
+  z-index: 1020;
+}
+
+/* Pseudo-élément qui comble l’espace sous la nav */
+.bottom-nav::after {
+  content: "";
+  position: fixed;
+  bottom: 0;                  /* tout en bas de l’écran */
+  left: 0;
+  width: 100%;
+  height: 1rem;               /* même distance que bottom:1rem */
+  background-color: #e0f7fa;  /* même que la nav */
+  z-index: 999;               /* sous la nav */
 }
