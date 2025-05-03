@@ -1,19 +1,20 @@
 {
   "name": "Fluvigo",
   "short_name": "Fluvigo",
-  "start_url": "/index.html",
-  "scope": "/",
+  // L’idéal est un chemin relatif à la racine du site :
+  "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#1d4e59",
   "icons": [
     {
-      "src": "/assets/icons/icon-192.png",
+      "src": "assets/icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/assets/icons/icon-512.png",
+      "src": "assets/icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
