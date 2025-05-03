@@ -1,10 +1,9 @@
 {
   "name": "Fluvigo",
   "short_name": "Fluvigo",
-  "description": "Assistant de navigation fluviale pour plaisanciers sans permis",
-  "start_url": "/index.html",
+  "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
-  "orientation": "portrait",
   "background_color": "#ffffff",
   "theme_color": "#1d4e59",
   "icons": [
