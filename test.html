@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Test Burger</title>
+  <link rel="stylesheet" href="assets/css/style.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+
+  <!-- On sort le bouton burger du header pour isoler le test -->
+  <button id="burger-button" class="burger-btn">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <h1>Votre contenu ici</h1>
+  <p>On vérifie juste le menu burger.</p>
+
+  <div id="menu-overlay" class="menu-overlay hidden"></div>
+  <nav id="side-menu" class="side-menu hidden">
+    <button id="menu-close" class="menu-close">&times;</button>
+    <ul>
+      <li><a href="#">Paramètres</a></li>
+      <li><a href="#">Mon compte</a></li>
+      <li><a href="#">À propos</a></li>
+    </ul>
+  </nav>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

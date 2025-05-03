@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="assets/img/logo-icon.jpg" type="image/png"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fluvigo – Accueil</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/index.override.css" />
+
+  <!-- PWA manifest & theme -->
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#1d4e59" />
+  <meta name="mobile-web-app-capable" content="yes" />
+
+  <!-- icône iOS -->
+  <link rel="apple-touch-icon" href="assets/icons/icon-192.png" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  />
+</head>
+<body>
+  <div class="home-container">
+    <!-- Header -->
+    <header role="banner" class="map-header logo-header">
+      <button
+        id="burger-button"
+        class="burger-btn"
+        aria-label="Ouvrir le menu">
+        <i class="fas fa-bars" aria-hidden="true"></i>
+      </button>
+      <a href="index.html" class="logo-link" aria-label="Retour à l’accueil">
+        <img src="assets/img/logo-fluvigo.jpg" alt="Logo Fluvigo" class="logo-img" />
+      </a>
+    </header>
+
+    <!-- Contenu principal -->
+    <main role="main" class="home">
+      <section class="hero">
+        <div class="hero-overlay">
+          <h2>Naviguez en toute sérénité</h2>
+          <a href="carte.html" class="btn">Voir la carte</a>
+          <p class="hero-text">
+            Explorez les voies navigables en toute sérénité grâce à une carte interactive, des infos utiles et vos lieux favoris.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer role="contentinfo" class="home-footer">
+      <p>Fluvigo – Prototype v1</p>
+    </footer>
+  </div>
+
+  <!-- Overlay et menu burger -->
+  <div id="menu-overlay" class="menu-overlay hidden"></div>
+  <nav
+    id="side-menu"
+    role="navigation"
+    aria-label="Menu latéral"
+    class="side-menu hidden">
+    <button
+      id="menu-close"
+      class="menu-close"
+      aria-label="Fermer le menu">&times;</button>
+    <ul class="menu-list">
+      <li><a href="parametres.html"><i class="fas fa-cog" aria-hidden="true"></i> Paramètres</a></li>
+      <li><a href="compte.html"><i class="fas fa-user" aria-hidden="true"></i> Mon compte</a></li>
+      <li><a href="apropos.html"><i class="fas fa-info-circle" aria-hidden="true"></i> À propos</a></li>
+    </ul>
+  </nav>
+
+  <!-- Barre de navigation fixe en bas -->
+  <nav
+    role="navigation"
+    aria-label="Menu principal"
+    class="bottom-nav">
+    <a href="index.html"   class="active" title="Accueil"><i class="fas fa-home" aria-hidden="true"></i></a>
+    <a href="carte.html"   title="Carte"><i class="fas fa-map-marked-alt" aria-hidden="true"></i></a>
+    <a href="infos.html"   title="Infos utiles"><i class="fas fa-info-circle" aria-hidden="true"></i></a>
+    <a href="favoris.html" title="Favoris"><i class="fas fa-star" aria-hidden="true"></i></a>
+  </nav>
+
+  <!-- Scripts -->
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/ripple.js"></script>
+</body>
+</html>

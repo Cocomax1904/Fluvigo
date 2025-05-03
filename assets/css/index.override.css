@@ -1,0 +1,157 @@
+:root {
+  --fluvigo-blue: #253F56;
+}
+
+/* ================= full‐screen index override ================= */
+html, body {
+  height: 100vh;
+  overflow: hidden;
+}
+body {
+  display: grid;
+  grid-template-rows:
+    auto    /* header */
+    1fr     /* contenu */
+    auto    /* onglets */
+    auto;   /* footer */
+}
+main.home {
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1rem;
+}
+.quick-links {
+  display: flex;
+  justify-content: space-around;
+  background: #e0f7fa;
+  padding: 0.5rem 0;
+
+}
+.quick-links a {
+  flex: 1;
+  text-align: center;
+  color: #0277bd;
+  font-size: 0.8rem;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.quick-links a i {
+  font-size: 1.3rem;
+  margin-bottom: 0.2rem;
+}
+footer {
+  padding: 0.4rem 0;
+  font-size: 0.75rem;
+}
+/* ============================================================= */
+
+/* ================= Responsivité mobiles/tablettes ================ */
+/* iPhone portrait (≤ 480px) */
+@media (max-width: 480px) {
+  header {
+    padding: 1.5rem 0.5rem;
+  }
+  header h1 {
+    font-size: 1.6rem;
+  }
+  header p {
+    font-size: 0.9rem;
+  }
+  .promo-image {
+    max-width: 100%;
+    margin: 1rem 0;
+  }
+  .intro h2 {
+    font-size: 1.4rem;
+  }
+  .intro p {
+    font-size: 0.9rem;
+  }
+  .intro .btn {
+    padding: 0.8rem 1.5rem;
+    font-size: 0.9rem;
+  }
+  .quick-links a {
+    font-size: 0.7rem;
+  }
+  .quick-links a i {
+    font-size: 1.1rem;
+  }
+  footer {
+    padding: 0.3rem 0;
+    font-size: 0.65rem;
+  }
+}
+
+/* iPhone & petits smartphones paysage (481px–767px) */
+@media (min-width: 481px) and (max-width: 767px) {
+  header h1 {
+    font-size: 1.8rem;
+  }
+  header p {
+    font-size: 1rem;
+  }
+  .promo-image {
+    max-width: 80%;
+  }
+  .intro .btn {
+    padding: 0.9rem 1.8rem;
+    font-size: 1rem;
+  }
+  .quick-links a {
+    font-size: 0.75rem;
+  }
+  .quick-links a i {
+    font-size: 1.2rem;
+  }
+  footer {
+    padding: 0.35rem 0;
+    font-size: 0.7rem;
+  }
+}
+
+/* iPad portrait (768px–1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  header h1 {
+    font-size: 2rem;
+  }
+  header p {
+    font-size: 1.05rem;
+  }
+  .promo-image {
+    max-width: 60%;
+  }
+  .intro .btn {
+    padding: 1rem 2rem;
+    font-size: 1.05rem;
+  }
+  .quick-links a {
+    font-size: 0.8rem;
+  }
+  .quick-links a i {
+    font-size: 1.3rem;
+  }
+  footer {
+    padding: 0.4rem 0;
+    font-size: 0.75rem;
+  }
+}
+
+/* iPad & grand écran paysage (≥1024px) */
+/* (Tu peux ajouter d’autres ajustements si tu veux) */
+@media (min-width: 1024px) {
+  /* on conserve la mise en page par défaut */
+}
+/* ============================================================== */
+/* ── Override footer fixe pour index.html ─────────────────────────── */
+.home-container > footer.home-footer {
+  position: static;   /* plus fixé en bas de fenêtre */
+  bottom: auto;       /* supprime bottom:0 */
+  width: auto;        /* supprime width:100% */
+  /* Les autres propriétés (background, padding, font-size…) restent */
+}
+/* ─────────────────────────────────────────────────────────────────── */

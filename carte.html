@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aqua eMap – Carte</title>
+
+  <!-- CSS principal -->
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  <!-- Header sans le bouton “Retour” -->
+  <header class="map-header">
+    <h1><i class="fas fa-map-marked-alt"></i> Carte de navigation</h1>
+  </header>
+
+  <!-- Carte et contrôles -->
+  <div id="map-container">
+    <div id="map"></div>
+    <div id="map-controls">
+      <button onclick="centerOnMe()"><i class="fas fa-location-arrow"></i></button>
+      <button onclick="toggleLocks()"><i class="fas fa-water"></i></button>
+      <button onclick="toggleBridges()"><i class="fas fa-road"></i></button>
+      <button onclick="openPOIModal()"><i class="fas fa-star"></i></button>
+    </div>
+  </div>
+
+  <!-- Modale d’ajout de favori -->
+  <div id="poi-modal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Ajouter un favori</h2>
+      <label>Nom du point :</label>
+      <input type="text" id="poi-nom" placeholder="Ex : Pont de Strasbourg" />
+      <label>Description :</label>
+      <textarea id="poi-description" rows="3" placeholder="Ex : Point de vue intéressant…"></textarea>
+      <label>Ajouter des photos :</label>
+      <input type="file" id="poi-photos" accept="image/*" multiple />
+      <div id="photo-preview" class="photo-preview"></div>
+      <div class="modal-actions">
+        <button onclick="submitPOI()">Enregistrer</button>
+        <button onclick="closePOIModal()" class="cancel">Annuler</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- Script de la page carte -->
+  <script src="assets/js/map.js"></script>
+
+  <!-- Barre de navigation fixe en bas -->
+  <nav class="bottom-nav">
+    <a href="index.html"   title="Accueil"><i class="fas fa-home"></i></a>
+    <a href="carte.html"   title="Carte"><i class="fas fa-map-marked-alt"></i></a>
+    <a href="infos.html"   title="Infos utiles"><i class="fas fa-info-circle"></i></a>
+    <a href="favoris.html" title="Favoris"><i class="fas fa-star"></i></a>
+  </nav>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aqua eMap – Favoris</title>
+
+  <!-- CSS principal -->
+  <link rel="stylesheet" href="assets/css/style.css"/>
+
+  <!-- Font Awesome pour les icônes -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <!-- Leaflet CSS (si mini‐maps) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+</head>
+<body>
+  <header class="map-header">
+    <h1><i class="fas fa-star"></i> Favoris</h1>
+    <!-- bouton Retour supprimé, on passe par la bottom-nav -->
+  </header>
+
+  <main class="favorites">
+    <p>Retrouvez ici vos marqueurs enregistrés.</p>
+
+    <div class="favorites-controls">
+      <label for="sort-select">Trier par :</label>
+      <select id="sort-select">
+        <option value="date-desc">Plus récents</option>
+        <option value="date-asc">Plus anciens</option>
+        <option value="name-asc">Nom A→Z</option>
+        <option value="name-desc">Nom Z→A</option>
+      </select>
+    </div>
+
+    <ul id="favorites-list"></ul>
+  </main>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- Script de la page favoris -->
+  <script src="assets/js/favoris.js"></script>
+
+  <!-- Barre de navigation fixe en bas -->
+  <nav class="bottom-nav">
+    <a href="index.html"   title="Accueil"><i class="fas fa-home"></i></a>
+    <a href="carte.html"   title="Carte"><i class="fas fa-map-marked-alt"></i></a>
+    <a href="infos.html"   title="Infos utiles"><i class="fas fa-info-circle"></i></a>
+    <a href="favoris.html" title="Favoris"><i class="fas fa-star"></i></a>
+  </nav>
+</body>
+</html>

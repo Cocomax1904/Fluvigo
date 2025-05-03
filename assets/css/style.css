@@ -1,0 +1,934 @@
+:root {
+  --fluvigo-blue: #253F56;
+}
+* {
+  transition: all 0.3s ease;
+}
+
+/* Reset & base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f5faff;
+  color: #222;
+  line-height: 1.6;
+  padding-bottom: 80px;
+}
+
+/* Header */
+header {
+  background-color: var(--fluvigo-blue);
+  color: white;
+  text-align: center;
+  padding: 2rem 1rem;
+}
+header h1 {
+  font-size: 2.2rem;
+}
+header p {
+  margin-top: 0.5rem;
+  font-size: 1.1rem;
+}
+
+/* Main content */
+main.home {
+  padding: 2rem 1rem;
+}
+.intro {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.intro .btn {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 1rem 2rem;
+  background-color: var(--fluvigo-blue);
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+.intro .btn i {
+  margin-right: 8px;
+}
+.intro .btn:hover {
+  background-color: #026fa4;
+}
+
+/* Quick links */
+.quick-links h3 {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.quick-links .links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+.quick-links a {
+  background: #e0f7fa;
+  padding: 1rem 1.5rem;
+  border-radius: 6px;
+  text-decoration: none;
+  color: #0277bd;
+  font-weight: 600;
+  transition: background 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.quick-links a i {
+  font-size: 1.2rem;
+}
+.quick-links a:hover {
+  background: #b2ebf2;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding: 1rem;
+  background-color: var(--fluvigo-blue);
+  color: white;
+}
+
+/* ====== Carte ====== */
+#map-container {
+  position: relative;
+  /* 80px = hauteur de ton header ; 3.5rem = hauteur de .bottom-nav */
+  height: calc(100vh - 80px - 3.5rem);
+  width: 100%;
+}
+
+#map {
+  height: 100%;
+  width: 100%;
+}
+#map-controls {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: 1000; /* ← Ajoute ceci */
+}
+
+#map-controls button {
+  background-color: var(--fluvigo-blue);
+  border: none;
+  color: white;
+  padding: 0.8rem;
+  border-radius: 50%;
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s;
+  z-index: 1001; /* ← Et ceci aussi pour garantir la priorité */
+}
+
+#map-controls button:hover {
+  background-color: #026fa4;
+}
+.map-header {
+  background-color: var(--fluvigo-blue);
+  color: white;
+  padding: 1rem;
+  text-align: center;
+  position: relative;
+}
+.back-btn {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* ====== Favoris ====== */
+.favorites {
+  padding: 1.5rem;
+}
+.favorites ul {
+  list-style: none;
+  padding: 0;
+}
+.favorites li {
+  background: #e0f7fa;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.favorites li i {
+  color: #ffb300;
+  margin-right: 0.5rem;
+}
+
+/* === MODALE === */
+.modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+.modal.hidden {
+  display: none;
+}
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+.modal-content h2 {
+  margin-bottom: 1rem;
+}
+.modal-content label {
+  display: block;
+  margin-top: 1rem;
+  font-weight: bold;
+}
+.modal-content input, .modal-content textarea {
+  width: 100%;
+  padding: 0.7rem;
+  margin-top: 0.3rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+.modal-actions {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+}
+.modal-actions button {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.modal-actions button:first-child {
+  background-color: var(--fluvigo-blue);
+  color: white;
+}
+.modal-actions .cancel {
+  background-color: #eee;
+}
+.photo-preview {
+  margin-top: 1rem;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.photo-preview img {
+  height: 60px;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 0 4px rgba(0,0,0,0.2);
+}
+.favori {
+  background: #e0f7fa;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.favori h4 {
+  margin-bottom: 0.5rem;
+}
+
+.mini-map {
+  width: 100%;
+  height: 200px;
+  border-radius: 8px;
+  margin: 1rem 0;
+}
+
+.favori {
+  background: #e0f7fa;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.favori h4 {
+  margin-bottom: 0.2rem;
+}
+
+.favori .coords {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 0.8rem;
+}
+
+.favori-content {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mini-map {
+  flex: 0 0 180px;
+  height: 120px;
+  border-radius: 8px;
+  min-width: 180px;
+}
+
+.photo-carousel {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.media-box img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+  box-shadow: 0 0 3px rgba(0,0,0,0.2);
+}
+.favori-horizontal {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  gap: 10px;
+  margin-bottom: 1rem;
+  border-radius: 12px;
+}
+
+/* ==== Carrousel horizontal simple ==== */
+.favori-horizontal {
+  display: flex;
+  overflow-x: auto;      /* défilement libre */
+  gap: 10px;
+  padding-bottom: 0.5rem; /* petit espace */
+}
+
+/* Mini-carte fixe */
+/* Taille des mini-maps dans la liste Favoris */
+.favori-map {
+  flex: 0 0 150px;    /* largeur fixe */
+  height: 150px;      /* même hauteur */
+  border-radius: 8px;
+  box-shadow: 0 0 4px rgba(0,0,0,0.1);
+}
+
+/* s’assure que Leaflet remplit bien le conteneur */
+.favori-map .leaflet-container {
+  width: 100%;
+  height: 100%;
+}
+
+/* Wrapper des photos (plus d’overflow ici) */
+.favori-carousel {
+  display: flex;
+  gap: 10px;
+}
+
+/* Chaque photo taille fixe */
+/* Photos carrées, même dimension */
+.favori-carousel img {
+  flex: 0 0 150px;    /* largeur fixe */
+  width: 150px;       /* garanti carré */
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 0 4px rgba(0,0,0,0.1);
+}
+
+
+.favorites-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.favorites-controls select {
+  padding: 0.3rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.favori button.delete {
+  background: #e53935;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  margin-left: 0.5rem;
+}
+.favori button.delete:hover {
+  background: #c62828;
+}
+.infos {
+  padding: 1.5rem;
+}
+.infos section {
+  margin-bottom: 2rem;
+}
+.infos h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+.info-box {
+  background: #e0f7fa;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.error {
+  color: #e53935;
+}
+.tips-list {
+  list-style: disc inside;
+  padding-left: 0;
+}
+.tips-list li {
+  margin-bottom: 0.5rem;
+}
+/* Vigicrues */
+.crue-list li {
+  margin-bottom: 0.5rem;
+}
+
+/* VNF */
+.vnf-list {
+  list-style: disc inside;
+  padding-left: 0;
+  margin-bottom: 1rem;
+}
+.vnf-list li {
+  margin-bottom: 0.4rem;
+}
+.crue-list, .vnf-list {
+  list-style: disc inside;
+  margin: 0.5rem 0 1rem;
+  padding: 0;
+}
+.crue-list li, .vnf-list li {
+  margin-bottom: 0.4rem;
+}
+.info-box h3 {
+  margin-top: 0;
+  font-size: 1rem;
+}
+.info-filter {
+  margin: 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.info-filter select {
+  padding: 0.3rem 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+/* bouton burger */
+.burger-btn {
+  position: absolute;
+  top: 1rem;
+  left: 1rem; /* ⬅️ on remplace `right` par `left` */
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* overlay */
+.menu-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.4);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 1000; /* ⬅️ abaissé pour que le menu passe au-dessus */
+}
+
+.menu-overlay:not(.hidden) {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* menu */
+.side-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 75%;
+  max-width: 300px;
+  height: 100%;
+  background-color: white;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+  z-index: 1500; /* ⬅️ surélevé pour qu'il soit au-dessus de l'overlay */
+  transform: translateX(-100%);
+  transition: transform 0.3s ease-in-out;
+  padding: 1.5rem 1rem;
+}
+
+.side-menu.open {
+  transform: translateX(0);
+}
+
+/* bouton fermer */
+.menu-close {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  align-self: flex-end;
+}
+
+/* Liste de liens */
+.menu-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* espace vertical entre chaque lien */
+}
+
+.menu-list a {
+  text-decoration: none;
+  color: #333;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.menu-list a:hover {
+  color: #007acc;
+}
+/* Section intro */
+.home .intro {
+  text-align: center;
+  padding: 2rem 1rem;
+}
+.home .intro .promo-image {
+  margin: 2rem auto;
+  max-width: 600px;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.home .intro .promo-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+/* Bouton Démarrer */
+.home .intro .btn {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 1.1rem;
+  text-decoration: none;
+  background: #007acc;
+  color: #fff;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+/* Quick links repositionné */
+.quick-links {
+  background: #e0f7fa;
+  padding: 1.5rem 1rem;
+  margin: 2rem 1rem 0;
+  border-radius: 10px;
+  text-align: center;
+}
+.quick-links h3 {
+  margin-bottom: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.quick-links .links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+.quick-links .links a {
+  flex: 1 1 120px;
+  max-width: 160px;
+  padding: 0.75rem;
+  background: #b2ebf2;
+  color: #007acc;
+  border-radius: 8px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.quick-links .links a:hover {
+  background: #81d4fa;
+}
+
+/* Ajustement footer */
+footer {
+  text-align: center;
+  padding: 1rem 0;
+  background: #007acc;
+  color: #fff;
+  margin-top: 2rem;
+}
+/* ====== Surcharge layout pour index.html uniquement ====== */
+.home-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;       /* plein écran */
+  overflow: hidden;    /* pas de scroll global */
+}
+
+/* Header taille naturelle */
+.home-container > header {
+  flex: 0 0 auto;
+}
+
+/* Contenu principal prend tout l’espace restant */
+.home-container > main.home {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  overflow: auto;      /* scroll interne si vraiment nécessaire */
+}
+
+/* Barre d’onglets juste en dessous du main */
+.home-container > .quick-links {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: space-around;
+  background: #e0f7fa;
+  padding: 0.5rem 0;
+}
+.home-container > .quick-links a {
+  flex: 1;
+  text-align: center;
+  text-decoration: none;
+  color: #0277bd;
+  font-size: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.home-container > .quick-links a i {
+  font-size: 1.3rem;
+  margin-bottom: 0.2rem;
+}
+
+/* Footer plus fin */
+.home-container > footer.home-footer {
+  flex: 0 0 auto;
+  padding: 0.4rem 0;
+  font-size: 0.75rem;
+}
+
+/* ====== Fins tweaks responsive ====== */
+@media (max-width: 480px) {
+  .home-container > header h1 { font-size: 1.6rem; }
+  .home-container > header p  { font-size: 0.9rem; }
+  .promo-image { max-width: 100%; }
+  .intro .btn { padding: 0.8rem 1.2rem; font-size: 0.9rem; }
+  .quick-links a { font-size: 0.7rem; }
+  .quick-links a i { font-size: 1.1rem; }
+}
+@media (min-width: 481px) and (max-width: 767px) {
+  .home-container > header h1 { font-size: 1.8rem; }
+  .promo-image { max-width: 80%; }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .home-container > header h1 { font-size: 2rem; }
+  .promo-image { max-width: 60%; }
+}
+/* Barre de nav fixe en bas, icônes seules */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #f5faff;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0.6rem 0;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.08); /* ombre vers le haut */
+  z-index: 1000;
+}
+
+/* Style des liens */
+.bottom-nav a {
+  color: var(--fluvigo-blue);
+  font-size: 1.5rem;
+  text-decoration: none;
+  flex: 1;
+  text-align: center;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Assure-toi que ton contenu ne soit pas masqué derrière la barre */
+body, .page-container, main.home {
+  padding-bottom: 3.5rem; /* ≃ hauteur de .bottom-nav + petit gap */
+}
+/* espace sous le contenu de la page Favoris */
+main.favorites {
+  padding-bottom: 3.5rem; /* hauteur de la .bottom-nav */
+}
+.logo-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  height: 100px;
+  position: relative;
+  padding: env(safe-area-inset-top) 1rem 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08); /* ajout d'une ombre douce */
+  z-index: 100;
+}
+
+.burger-btn {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.logo-img {
+  height: 70px; /* Taille visuelle proche de ta maquette */
+  max-height: 80px;
+  object-fit: contain;
+}
+
+.hero {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100svh; /* ou 100vh puis 100svh en fallback */
+  background-image:
+    linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.4) 0%,
+      rgba(0, 0, 0, 0.2) 50%,
+      rgba(0, 0, 0, 0.4) 100%
+    ),
+    url('../img/fond.png');
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.8rem;
+  padding: 0 2rem;
+  width: 100%;
+  max-width: 400px;
+  z-index: 2;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.9rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  background-color: var(--fluvigo-blue);
+  border: none;
+  border-radius: 999px; /* ← capsule complète */
+  text-decoration: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.btn:hover {
+  background-color: #0052a3;
+}
+
+.btn i {
+  margin-right: 0.5rem;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #1d4e59;
+}
+
+p {
+  font-weight: 400;
+  color: #444;
+  line-height: 1.6;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.hero-overlay h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.hero-overlay p {
+  font-size: 1rem;
+  font-weight: 300;
+  color: rgba(255,255,255,0.85);
+  max-width: 80%;
+  margin: 0 auto;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) translateY(0);
+  }
+}
+
+.hero-overlay h2,
+.hero-overlay .btn {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUpChild 0.8s ease-out 0.2s forwards;
+}
+/* animation sur le paragraphe sous le bouton */
+.hero-overlay .hero-text {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUpChild 0.8s ease-out 0.6s forwards;
+}
+@keyframes fadeUpChild {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* si tu veux un petit délai sur le bouton */
+.hero-overlay .btn {
+  animation-delay: 0.4s;
+}
+
+/* ==== FEEDBACK SURVOL & ACTIVE ==== */
+.btn {
+  position: relative;      /* pour le ripple */
+  overflow: hidden;        /* découpe l’onde */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+/* ==== RIPPLE EFFECT ==== */
+.ripple {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: rgba(255,255,255,0.6);
+  border-radius: 50%;
+  transform: scale(0);
+  animation: ripple-animation 0.6s linear;
+  pointer-events: none;
+}
+
+@keyframes ripple-animation {
+  to {
+    transform: scale(15);
+    opacity: 0;
+  }
+}
+.lead {
+  font-size: 1.1rem;
+  font-weight: 300;
+  color: #555;
+  max-width: 90%;
+  margin: 0.5rem auto 1.5rem;
+}
+.loader {
+  position: fixed; inset: 0;
+  background: #f5faff;
+  z-index: 5;
+  transition: opacity 0.4s;
+}
+.loader.hidden { opacity: 0; visibility: hidden; }
+.bottom-nav a:hover,
+.bottom-nav a:focus {
+  background: rgba(29,78,89,0.1);
+  border-radius: 50%;
+}
+.bottom-nav a.active {
+  color: var(--fluvigo-blue);
+  transform: scale(1.1);
+}
+.hero-overlay .hero-text {
+  font-size: 1rem;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 85%;
+  margin: 0 auto 1.5rem;
+  line-height: 1.5;
+}
+

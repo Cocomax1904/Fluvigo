@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aqua eMap – Infos utiles</title>
+
+  <!-- CSS principal -->
+  <link rel="stylesheet" href="assets/css/style.css"/>
+
+  <!-- Font Awesome pour les icônes -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <!-- Leaflet (pour les mini‐maps éventuelles) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+</head>
+<body>
+  <header class="map-header">
+    <h1><i class="fas fa-info-circle"></i> Infos utiles</h1>
+    <a href="index.html" class="back-btn">
+      <i class="fas fa-arrow-left"></i> Retour
+    </a>
+  </header>
+
+  <main class="infos">
+    <!-- Vigicrues -->
+    <section id="vigicrues">
+      <h2><i class="fas fa-water"></i> Vigilance Crues</h2>
+
+      <!-- Filtre par territoire -->
+      <div class="info-filter">
+        <label for="zone-select">Zone de vigilance :</label>
+        <select id="zone-select">
+          <option value="">— Tout le pays —</option>
+          <!-- Options générées par JS -->
+        </select>
+      </div>
+
+      <div class="info-box">
+        <h3>Territoires de vigilance</h3>
+        <div id="ter-data">Chargement…</div>
+      </div>
+
+      <div class="info-box">
+        <h3>Stations de mesure</h3>
+        <div id="stations-data">Chargement…</div>
+      </div>
+
+      <div class="info-box">
+        <h3>Observations réelles (5 dernières)</h3>
+        <div id="obs-data">Chargement…</div>
+      </div>
+
+      <div class="info-box">
+        <h3>Prévisions (5 prochaines)</h3>
+        <div id="previsions-data">Chargement…</div>
+      </div>
+    </section>
+
+    <!-- Statut VNF -->
+    <section id="vnf-status">
+      <h2><i class="fas fa-ship"></i> Statut des ouvrages VNF</h2>
+      <div id="vnf-data" class="info-box">Chargement…</div>
+    </section>
+
+    <!-- Conseils pratiques -->
+    <section id="tips">
+      <h2><i class="fas fa-lightbulb"></i> Conseils de navigation</h2>
+      <ul class="tips-list">
+        <li>Respectez les limitations de vitesse indiquées.</li>
+        <li>Vérifiez la météo et le niveau d’eau avant de partir.</li>
+        <li>Préparez vos documents et votre plan de route.</li>
+        <li>Gardez un œil sur les horaires d’écluses.</li>
+      </ul>
+    </section>
+  </main>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- Script de la page infos -->
+  <script src="assets/js/infos.js"></script>
+
+  <!-- Barre de navigation fixe en bas -->
+  <nav class="bottom-nav">
+    <a href="index.html"   title="Accueil"><i class="fas fa-home"></i></a>
+    <a href="carte.html"   title="Carte"><i class="fas fa-map-marked-alt"></i></a>
+    <a href="infos.html"   title="Infos utiles"><i class="fas fa-info-circle"></i></a>
+    <a href="favoris.html" title="Favoris"><i class="fas fa-star"></i></a>
+  </nav>
+</body>
+</html>
