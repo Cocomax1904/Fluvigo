@@ -1,13 +1,15 @@
-// 1) Déclarations globales (en-tête du fichier)
+// 1) Déclarations globales
 let map;
 let userMarker;
-let lockMarkers = [];
-let bridgeMarkers = [];
-let selectedPhotos = [];      // Stocke les images choisies
-let selectedLatLng = null;    // Position cliquée
-let clickMarker = null;       // Marqueur de sélection
+let clickMarker = null;
+let selectedPhotos = [];
+let selectedLatLng = null;
 
-// 1bis) Fonction de compression côté client
+let isFollowing = false;  // mode « suivi » activé ?
+let lastCoords = null;    // dernière position connue
+let watchId = null;
+
+// 1bis) Fonction de compression (inchangée)
 function compressImage(dataUrl, maxW, maxH, quality, callback) {
   const img = new Image();
   img.onload = () => {
@@ -15,156 +17,184 @@ function compressImage(dataUrl, maxW, maxH, quality, callback) {
     if (w > maxW) { h *= maxW / w; w = maxW; }
     if (h > maxH) { w *= maxH / h; h = maxH; }
     const canvas = document.createElement("canvas");
-    canvas.width = w;
-    canvas.height = h;
+    canvas.width = w; canvas.height = h;
     const ctx = canvas.getContext("2d");
     ctx.drawImage(img, 0, 0, w, h);
-    const compressed = canvas.toDataURL("image/jpeg", quality);
-    callback(compressed);
+    callback(canvas.toDataURL("image/jpeg", quality));
   };
   img.src = dataUrl;
 }
 
-// 2) Icônes personnalisées
-const lockIcon = L.icon({
-  iconUrl: 'assets/img/lock.png',
-  iconSize: [32, 32],
-  iconAnchor: [16, 32],
-  popupAnchor: [0, -32]
+// 2) Icônes
+const userIcon = L.icon({
+  iconUrl: 'assets/img/pin-red.png',
+  iconSize:    [50, 50],
+  iconAnchor:  [25, 40],
+  popupAnchor: [0, -50]
 });
-const bridgeIcon = L.icon({
-  iconUrl: 'assets/img/bridge.png',
-  iconSize: [32, 32],
-  iconAnchor: [16, 32],
-  popupAnchor: [0, -32]
+const clickIcon = L.icon({
+  iconUrl: 'assets/img/pin-red.png',
+  iconSize:    [50, 50],
+  iconAnchor:  [25, 40],
+  popupAnchor: [0, -50]
 });
 
+// 3) Initialisation géoloc avec mémorisation
+async function initGeolocation() {
+  if (!navigator.geolocation) return;
+
+  // Détermination du state de permission
+  let permState = 'prompt';
+  if (navigator.permissions) {
+    try {
+      const status = await navigator.permissions.query({ name: 'geolocation' });
+      permState = status.state; // 'granted'|'prompt'|'denied'
+    } catch {
+      // Permissions API dispo mais query échoue
+      permState = localStorage.getItem('geoAsked') ? 'granted' : 'prompt';
+    }
+  } else {
+    // Pas d'API Permissions → on se fie à notre drapeau
+    permState = localStorage.getItem('geoAsked') ? 'granted' : 'prompt';
+  }
+
+  if (permState === 'prompt') {
+    // Première fois : on marque qu'on a demandé et on appelle getCurrentPosition
+    localStorage.setItem('geoAsked', 'true');
+    navigator.geolocation.getCurrentPosition(
+      pos => {
+        onPositionUpdate(pos.coords);
+        startWatch();
+      },
+      err => console.warn("Géoloc initiale refusée ou erreur :", err.message),
+      { enableHighAccuracy: true }
+    );
+  }
+  else if (permState === 'granted') {
+    // Déjà accordée → on démarre directement le watch sans popup
+    startWatch();
+  }
+  else {
+    // Refusée → on n'y revient pas
+    console.warn("Géolocalisation refusée, suivi désactivé.");
+  }
+}
+
+function startWatch() {
+  watchId = navigator.geolocation.watchPosition(
+    pos => onPositionUpdate(pos.coords),
+    err => console.warn("watchPosition erreur :", err.message),
+    { enableHighAccuracy: true, maximumAge: 0 }
+  );
+}
+
+function onPositionUpdate({ latitude, longitude }) {
+  const coords = [latitude, longitude];
+  lastCoords = coords;
+
+  if (userMarker) {
+    userMarker.setLatLng(coords);
+  } else {
+    userMarker = L.marker(coords, { icon: userIcon })
+      .addTo(map)
+      .bindPopup("Vous êtes ici");
+  }
+
+  if (isFollowing) {
+    map.setView(coords, map.getZoom(), { animate: true });
+    userMarker.openPopup();
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
-  // 3) Initialisation de la carte
-  map = L.map("map").setView([48.5734, 7.7521], 13);
+  // 4) Initialisation de la carte
+  map = L.map("map").setView([48.5734,7.7521], 4);
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: "© OpenStreetMap contributors"
   }).addTo(map);
 
-  // 4) Clic utilisateur : poser un pin n'importe où
+  // 5) Clic utilisateur : pin sélectionné
   map.on('click', e => {
     selectedLatLng = e.latlng;
     if (clickMarker) map.removeLayer(clickMarker);
-    clickMarker = L.marker(selectedLatLng).addTo(map)
+    clickMarker = L.marker(selectedLatLng, { icon: clickIcon })
+      .addTo(map)
       .bindPopup("Point sélectionné")
       .openPopup();
   });
 
-  // 5) Centrage si on vient d’un favori
+  // 6) Centrage si on vient d’un favori
   const target = JSON.parse(localStorage.getItem("goto"));
   if (target) {
-    map.setView([target.lat, target.lng], 17);
-    L.marker([target.lat, target.lng])
+    map.setView([target.lat,target.lng],17);
+    L.marker([target.lat,target.lng])
       .addTo(map)
       .bindPopup("Point ciblé")
       .openPopup();
     localStorage.removeItem("goto");
   }
 
-  // 6) Géolocalisation utilisateur
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(pos => {
-      const { latitude, longitude } = pos.coords;
-      userMarker = L.marker([latitude, longitude])
-        .addTo(map)
-        .bindPopup("Vous êtes ici")
-        .openPopup();
-      map.setView([latitude, longitude], 15);
-    });
-  }
-
-  // 7) Import de photos locales avec compression
-  document.getElementById("poi-photos").addEventListener("change", function () {
+  // 7) Import de photos locales
+  document.getElementById("poi-photos").addEventListener("change", function(){
     selectedPhotos = [];
     const preview = document.getElementById("photo-preview");
     preview.innerHTML = "";
-
     Array.from(this.files).forEach(file => {
       const reader = new FileReader();
-      reader.onload = e => {
-        // compresse à 400×400 px, qualité 0.7
-        compressImage(e.target.result, 400, 400, 0.7, compressed => {
-          selectedPhotos.push(compressed);
-          const img = document.createElement("img");
-          img.src = compressed;
-          preview.appendChild(img);
-        });
-      };
+      reader.onload = e => compressImage(e.target.result,400,400,0.7(res=>{
+        selectedPhotos.push(res);
+        const img = document.createElement("img");
+        img.src = res; preview.appendChild(img);
+      }));
       reader.readAsDataURL(file);
     });
   });
+
+  // 8) Désactive le suivi dès qu’on bouge la carte
+  map.on('movestart', () => {
+    if(isFollowing){
+      isFollowing = false;
+      document.getElementById('center-btn')?.classList.remove('active');
+    }
+  });
+
+  // 9) On lance la géoloc une fois
+  initGeolocation();
 });
 
-// 8) Fonctions utilitaires
-
+// 10) Bouton « Me centrer »
 function centerOnMe() {
-  if (!navigator.geolocation) return;
-  navigator.geolocation.getCurrentPosition(pos => {
-    const { latitude, longitude } = pos.coords;
-    if (userMarker) userMarker.setLatLng([latitude, longitude]);
-    else {
-      userMarker = L.marker([latitude, longitude])
-        .addTo(map)
-        .bindPopup("Vous êtes ici");
-    }
-    map.setView([latitude, longitude], 15);
-  });
+  if (!lastCoords) {
+    return alert("Position non disponible pour le moment.");
+  }
+  // Recentrage unique au zoom 15
+  map.setView(lastCoords, 15);
+  userMarker?.openPopup();
+
+  // Activation du suivi continu
+  isFollowing = true;
+  document.getElementById('center-btn')?.classList.add('active');
 }
 
-function toggleLocks() {
-  if (lockMarkers.length === 0) {
-    const locks = [[48.578, 7.75],[48.567, 7.76]];
-    locks.forEach(coord => {
-      const m = L.marker(coord, { icon: lockIcon })
-        .addTo(map)
-        .bindPopup("Écluse");
-      lockMarkers.push(m);
-    });
-  } else {
-    lockMarkers.forEach(m => map.removeLayer(m));
-    lockMarkers = [];
-  }
-}
+// 11) Stubs
+function openMapSettings(){ console.log("Settings"); }
+function openFilter(){ console.log("Filter"); }
+function openNearbyList(){ console.log("Nearby"); }
 
-function toggleBridges() {
-  if (bridgeMarkers.length === 0) {
-    const bridges = [[48.574, 7.74],[48.57, 7.755]];
-    bridges.forEach(coord => {
-      const m = L.marker(coord, { icon: bridgeIcon })
-        .addTo(map)
-        .bindPopup("Pont");
-      bridgeMarkers.push(m);
-    });
-  } else {
-    bridgeMarkers.forEach(m => map.removeLayer(m));
-    bridgeMarkers = [];
-  }
-}
-
-function openPOIModal() {
-  if (!selectedLatLng) {
-    return alert("Cliquez sur la carte pour choisir un emplacement.");
-  }
+// 12) Modal Favoris
+function openPOIModal(){
+  if(!selectedLatLng) return alert("Cliquez sur la carte.");
   document.getElementById("poi-modal").classList.remove("hidden");
 }
-
-function closePOIModal() {
+function closePOIModal(){
   document.getElementById("poi-modal").classList.add("hidden");
 }
-
-function submitPOI() {
-  if (!selectedLatLng) return alert("Position inconnue !");
+function submitPOI(){
+  if(!selectedLatLng) return alert("Position inconnue.");
   const latlng = selectedLatLng;
-
   const nom = document.getElementById("poi-nom").value.trim();
+  if(!nom) return alert("Donnez un nom.");
   const description = document.getElementById("poi-description").value.trim();
-  if (!nom) return alert("Merci de donner un nom au point.");
-
   const poi = {
     lat: latlng.lat,
     lng: latlng.lng,
@@ -173,19 +203,17 @@ function submitPOI() {
     photos: selectedPhotos,
     date: new Date().toISOString()
   };
-
-  const favoris = JSON.parse(localStorage.getItem("favoris")) || [];
+  const favoris = JSON.parse(localStorage.getItem("favoris"))||[];
   favoris.push(poi);
-  localStorage.setItem("favoris", JSON.stringify(favoris));
-
+  localStorage.setItem("favoris",JSON.stringify(favoris));
   alert("Favori enregistré !");
   closePOIModal();
-  if (clickMarker) map.removeLayer(clickMarker);
+  if(clickMarker) map.removeLayer(clickMarker);
   selectedLatLng = null;
   clickMarker = null;
+  selectedPhotos = [];
   document.getElementById("poi-nom").value = "";
   document.getElementById("poi-description").value = "";
   document.getElementById("poi-photos").value = "";
   document.getElementById("photo-preview").innerHTML = "";
-  selectedPhotos = [];
 }
