@@ -5,12 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Fluvigo – Carte</title>
   <link rel="icon" href="assets/img/logo-icon.png" type="image/png"/>
-
   <link rel="stylesheet" href="assets/css/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5j7Wnn9jvvqBUZMv2ianfTF1K3ui-h9M&libraries=maps"></script>
-  <!-- Ton script principal -->
-  <script type="module" src="assets/js/test_map.js"></script>
 </head>
 
 <body class="page-wrapper">
@@ -25,29 +21,16 @@
     </div>
   </div>
 
-  <div id="poi-modal" class="modal hidden">
-    <div class="modal-content">
-      <h2>Ajouter un favori</h2>
-      <label for="poi-nom">Nom du point :</label>
-      <input type="text" id="poi-nom" placeholder="Ex : Pont de Strasbourg" />
-      <label for="poi-description">Description :</label>
-      <textarea id="poi-description" rows="3" placeholder="Ex : Point de vue…"></textarea>
-      <label for="poi-photos">Ajouter des photos :</label>
-      <input type="file" id="poi-photos" accept="image/*" multiple />
-      <div id="photo-preview" class="photo-preview"></div>
-      <div class="modal-actions">
-        <button onclick="submitPOI()">Enregistrer</button>
-        <button onclick="closePOIModal()" class="cancel">Annuler</button>
-      </div>
-    </div>
-  </div>
-
   <nav class="bottom-nav">
     <a href="index.html" title="Accueil"><i class="fas fa-home"></i></a>
     <a href="carte.html" class="active" title="Carte"><i class="fas fa-map-marked-alt"></i></a>
     <a href="infos.html" title="Infos utiles"><i class="fas fa-info-circle"></i></a>
     <a href="favoris.html" title="Favoris"><i class="fas fa-star"></i></a>
   </nav>
-  
+
+  <!-- Script de chargement classique Google Maps avec callback -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5j7Wnn9jvvqBUZMv2ianfTF1K3ui-h9M&callback=initMap&libraries=places" async defer></script>
+  <!-- Script JS qui contient la logique de la carte -->
+  <script src="assets/js/classic_map.js"></script>
 </body>
 </html>
