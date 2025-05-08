@@ -1,26 +1,36 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Carte simple</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <style>
-      html, body, #map {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-    </style>
-    <script>
-      function initMap() {
-        const map = new google.maps.Map(document.getElementById("map"), {
-          center: { lat: 48.8566, lng: 2.3522 },
-          zoom: 12,
-        });
-      }
-    </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5j7Wnn9jvvqBUZMv2ianfTF1K3ui-h9M&callback=initMap" async defer></script>
-  </head>
-  <body>
-    <div id="map"></div>
-  </body>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fluvigo – Carte</title>
+  <link rel="icon" href="assets/img/logo-icon.png" type="image/png"/>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+
+<body class="page-wrapper">
+  <div id="map-container">
+    <div id="map" style="height: 100vh; width: 100%;"></div>
+    <div id="map-controls">
+      <button id="center-btn" title="Me centrer"><i class="fas fa-location-arrow"></i></button>
+      <button id="settings-btn" title="Paramètres"><i class="fas fa-layer-group"></i></button>
+      <button id="filter-btn" title="Filtrer"><i class="fas fa-filter"></i></button>
+      <button id="nearby-btn" title="Liste"><i class="fas fa-list"></i></button>
+      <button id="favorites-btn" title="Favoris"><i class="fas fa-star"></i></button>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="index.html" title="Accueil"><i class="fas fa-home"></i></a>
+    <a href="carte.html" class="active" title="Carte"><i class="fas fa-map-marked-alt"></i></a>
+    <a href="infos.html" title="Infos utiles"><i class="fas fa-info-circle"></i></a>
+    <a href="favoris.html" title="Favoris"><i class="fas fa-star"></i></a>
+  </nav>
+
+  <!-- Script de chargement classique Google Maps avec callback -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5j7Wnn9jvvqBUZMv2ianfTF1K3ui-h9M&callback=initMap&libraries=places" async defer></script>
+  <!-- Script JS qui contient la logique de la carte -->
+  <script src="assets/js/classic_map.js"></script>
+</body>
 </html>
